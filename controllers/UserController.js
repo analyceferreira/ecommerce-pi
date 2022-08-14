@@ -247,6 +247,9 @@ const UserController = {
 
         console.log('---------------> Só redirecionar')
 
+        req.session.userExists = userExists
+        console.log(userExists)
+
         return res.redirect(`/usuario/${userExists.slug}`)
 
     },

@@ -4,7 +4,8 @@ const express = require('express')
 const path = require('path')
 const appRouter = express.Router()
 const app = express()
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser')
+const session = require('express-session')
  
 //-------------- IMPORT DATABASE -----------------
 
@@ -28,6 +29,13 @@ app.use(bodyParser.urlencoded({ extended:false}))
 app.set('view engine', 'ejs')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'script')))
+
+//------------  CONFIG SESSION --------------------
+app.use(session({
+    secret:"Projeto LogoTipo",
+    resave:true,
+    saveUninitialized:true
+}))
 
 
 //-------------- ROUTES -----------------
