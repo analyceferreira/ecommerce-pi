@@ -1,17 +1,17 @@
 <div class="container form-login margin-header">
 
     <div class="first-content">
-        <form method="post" action="/usuario/criar" >
+        <form method="post" action="/usuario/criar">  
             <h1>CRIAR CONTA</h1>
 
             <div>
                 <div class="div-input">
-                    <label for="nome">Nome completo:</label>
+                    <label for="name">Nome completo:</label>
                     <input type="text" id="name" name="name"  placeholder="">
                 </div>
                 <div class="div-input">
                     <label for="Email">Email:</label>
-                    <input type="text" id="email" name="email" placeholder="">
+                    <input type="email" id="email" name="email" placeholder="">
                 </div>
                 
                 <div class="div-input">
@@ -20,7 +20,7 @@
                 </div>
                 
                 <div class="div-input">
-                    <label for="Senha">Senha:</label>
+                    <label for="password">Senha:</label>
                     <input type="password" id="senha" name="password" placeholder="">
                 </div>
 
@@ -51,8 +51,8 @@
         <h1>LOGIN</h1>
         
         <form method="post" action="/usuario/logar">
-            <input type="text" id="email" name="email" placeholder="Email">
-            <input type="password" id="password" name="password" placeholder="Senha">
+            <input type="email" id="email" name="email" placeholder="Email">
+            <input type="password" id="password" name="password" placeholder="password">
         
             <button class="button-submit" type="submit">entrar</button>
         </form>
