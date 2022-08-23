@@ -11,8 +11,7 @@ const OrderStatusRepository = models.OrderStatus
 const PaymentMethodRepository = models.PaymentMethod
 const CourierRepository = models.Courier
 const OrderProductsRepository = models.OrderProducts
-
-
+const bcrypt = require('bcrypt');
 
 const UserController = {
     index: (req, res) => {
@@ -157,7 +156,8 @@ const UserController = {
 
         let slug = name.toLowerCase().replace(/ /g, '-')
 
-        //-------------------- Validations --------------------
+       // -------------------- Validations --------------------
+
         const userExists = await UserRepository.findOne({
             where: {
                 email
@@ -176,6 +176,8 @@ const UserController = {
             message.content = 'As senhas precisam ser iguais'
             return res.render('layout', {'page': 'login', message})
         }
+        // crypto password
+        let newPass = bcrypt.hashSync(password, 10)
 
         const phoneFormated = phone.replace(/[[\s\W-]+/g, '')
 
@@ -200,7 +202,7 @@ const UserController = {
             name:  name,
             slug:  slug,
             email:  email,
-            password:  password,
+            password:  newPass,
             phone:  phoneFormated,
             type_user: 'client'
         })
@@ -217,11 +219,11 @@ const UserController = {
         }
 
         console.log('---------------------------------')
-        console.log('email')
-        console.log(email)
+        console.log('email: ', email)
         console.log('---------------------------------')
-        console.log('password')
-        console.log(password)
+        console.log('password', password)
+
+
 
         // -------------------- Validations --------------------
         const userExists = await UserRepository.findOne({
@@ -229,26 +231,37 @@ const UserController = {
                 'email': email
             }
         })
+        const pswdOk = bcrypt.compareSync(password, userExists.password)
         console.log('procurou user')
+        console.log(userExists)
 
-        if(!userExists) {
+        //if(!userExists) {
+        if(userExists.email == undefined || userExists.email == null){
             message.type = 'login'
             message.content = 'Usuário não cadastrado, por favor crie uma conta'
             return res.render('layout', {'page': 'login', message})
         }
         console.log('validou user')
-
-        if (password != userExists.password) {
+        // if (password != userExists.password) {
+        //     message.type = 'login'
+        //     message.content = 'Senha inválida'
+        //     return res.render('layout', {'page': 'login', message})
+        // }
+        if (pswdOk){
+            console.log("USUARIO LOGADO!")
+            return res.redirect(`/usuario/${userExists.slug}`)  
+            
+        }
+        else{
             message.type = 'login'
             message.content = 'Senha inválida'
             return res.render('layout', {'page': 'login', message})
         }
+        
         console.log('senha ok')
 
-        console.log('---------------> Só redirecionar')
-
-        return res.redirect(`/usuario/${userExists.slug}`)
-
+        console.log('---------------> Só redirecionar')     
+        
     },
 
     updateUser: async (req, res) => {
